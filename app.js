@@ -33,7 +33,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 app.use('/', index);
-app.use('/login', users)
+app.use('/', users)
 app.use('/users', users);
 
 // passport config
