@@ -1,4 +1,5 @@
 var Users = require("../models/users");
+var passport = require('passport');
 
 var UsersController = {
   getLogin: function(request, response) {
@@ -6,9 +7,19 @@ var UsersController = {
     response.render('login', locals)
   },
 
+  postLogin: function(request, response) {
+    // Call to model to check hashes?
+    passport.authenticate('local', { failureRedirect: '/login' }),
+    response.redirect('/')
+  },
+
   getSignUp: function(request, response) {
     var locals = {}
     response.render('signup', locals)
+  },
+
+  postSignUp: function(request, response) {
+
   },
 
   getLogout: function(request, response) {

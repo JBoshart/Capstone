@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy
+var Strategy = require('passport-local').Strategy
 var session = require('express-session');
 var massive = require('massive');
 
@@ -35,10 +35,37 @@ var users = require('./routes/users');
 app.use('/', index);
 app.use('/', users)
 
-// passport config
-// app.use(session({secret: 'obvithiswillchange'}))
-// app.use(passport.initialize())
-// app.use(passport.session())
+// passport local:
+// Configure the local strategy for use by Passport.
+  // The local strategy requires a `verify` function which receives the credentials (`username` and `password`) submitted by the user.  The function must verify that the password is correct and then invoke `cb` with a user object, which will be set at `req.user` in route handlers after authentication.
+passport.use(new Strategy(
+  function(email, password, cb) {
+    db.users.findOne({email: email}, function(err, user) {
+      if (err) { return cb(err); }
+      if (!user) { return cb(null, false); }
+      if (user.password != password) { return cb(null, false); }
+      return cb(null, user);
+    });
+  }));
+
+
+// Configure Passport authenticated session persistence.
+  // In order to restore authentication state across HTTP requests, Passport needs to serialize users into and deserialize users out of the session.  The typical implementation of this is as simple as supplying the user ID when serializing, and querying the user record by ID from the database when deserializing.
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+  db.users.find({id: id}, function (err, user) {
+    if (err) { return cb(err); }
+    cb(null, user);
+  });
+});
+
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
