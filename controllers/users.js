@@ -2,25 +2,12 @@ var Users = require("../models/users");
 var passport = require('passport');
 
 var UsersController = {
-  getLogin: function(request, response) {
-    var locals = {}
-    response.render('login', locals)
-  },
+  getFacebookLogin: passport.authenticate('facebook'),
 
-  postLogin: function(request, response) {
-    // Call to model to check hashes?
-    passport.authenticate('local', { failureRedirect: '/login' }),
-    response.redirect('/')
-  },
-
-  getSignUp: function(request, response) {
-    var locals = {}
-    response.render('signup', locals)
-  },
-
-  postSignUp: function(request, response) {
-
-  },
+  getFacebookReturn: passport.authenticate('facebook', { failureRedirect: '/' }),
+    function(request, response) {
+      response.redirect('/profile', request.user.user_id)
+    }),
 
   getLogout: function(request, response) {
     request.logout()

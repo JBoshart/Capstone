@@ -3,11 +3,8 @@ var passport = require('passport')
 var router = express.Router();
 var Controllers = require('../controllers/users')
 
-router.get('/login', Controllers.getLogin)
-router.post('/login', Controllers.postLogin)
-
-router.get('/signup', Controllers.getSignUp)
-router.post('/signup', Controllers.postSignUp)
+router.get('/login/facebook', Controllers.getFacebookLogin)
+router.get('/login/facebook/return', Controllers.getFacebookReturn)
 
 router.get('/profile', Controllers.getProfile)
 router.get('/logout', Controllers.getLogout)
