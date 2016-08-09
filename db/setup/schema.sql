@@ -1,16 +1,12 @@
--- DROP TABLE IF EXISTS customers;
--- CREATE TABLE customers(
---   id serial PRIMARY KEY,
---   name text,
---   registered_at date,
---   address text,
---   city text,
---   state text,
---   postal_code text,
---   phone text,
---   account_credit decimal(9,2)
--- );
---
+-- For local auth only at this point. Will change.
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+  id serial PRIMARY KEY,
+  email text,
+  password text,
+)
+
+-- Example schema from previous project:
 -- DROP TABLE IF EXISTS videos;
 -- CREATE TABLE videos(
 --   id serial PRIMARY KEY,

@@ -1,5 +1,5 @@
 var massive = require('massive');
-var connectionString = "postgres://localhost/AspirationalVegetables"; 
+var connectionString = "postgres://localhost/AspirationalVegetables";
 
 var db = massive.connectSync({connectionString : connectionString});
 
@@ -7,9 +7,9 @@ var db = massive.connectSync({connectionString : connectionString});
 // setup is also a property of the db object
 // created a namespace for these scripts
 db.setup.schema([], function(err, res) {
-  if (err) {
-    throw(new Error(err.message))
-  }
+  // if (err) {
+  //   throw(new Error(err.message))
+  // }
   console.log("Yay schema!")
   process.exit();
 });
