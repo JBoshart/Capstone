@@ -6,8 +6,9 @@ var UsersController = {
 
   getFacebookReturn: passport.authenticate('facebook', { failureRedirect: '/' }),
     function(request, response) {
-      response.redirect('/profile', request.user.user_id)
-    }),
+      console.log("I did it.")
+      response.redirect('/', request.user.user_id)
+    },
 
   getLogout: function(request, response) {
     request.logout()

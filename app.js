@@ -4,15 +4,44 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var dotenv = require('dotenv').config()
 var passport = require('passport');
 var FaceStrategy = require('passport-facebook').Strategy;
-var session = require('express-session');
 var massive = require('massive');
-var dotenv = require('dotenv').config()
 
 var app = module.exports = express();
 
 var Users = require("./models/users")
+
+// passport-facebook:
+passport.use(new FaceStrategy({
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  callbackURL: 'http://localhost:3000/login/facebook/return'
+},
+function(accessToken, refreshToken, profile, cb) {
+  var current_user = {}//Users.findOrMake(profile)
+  return cb(null, current_user)
+}));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  var current_user = {}//Users.findOrMake(obj)
+  cb(null, current_user);
+});
+
+// Initialize Passport and restore authentication state, if any, from the session.
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(session({
+  secret: process.env.SECRET_SECRET,
+  resave: true,
+  saveUninitialized: true }))
 
 // database
 var connectionString = "postgres://localhost/AspirationalVegetables";
@@ -37,35 +66,6 @@ var users = require('./routes/users');
 
 app.use('/', index);
 app.use('/', users)
-
-// passport-facebook:
-passport.use(new FaceStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/login/facebook/return'
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    var current_user = {}//Users.findOrMake(profile)
-    return cb(null, current_user)
-  }));
-
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
-});
-
-passport.deserializeUser(function(obj, cb) {
-  var current_user = {}//Users.findOrMake(obj)
-  cb(null, current_user);
-});
-
-app.use(session({
-  secret: process.env.SECRET_SECRET,
-  resave: true,
-  saveUninitialized: true }))
-
-// Initialize Passport and restore authentication state, if any, from the session.
-app.use(passport.initialize());
-app.use(passport.session());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
