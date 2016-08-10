@@ -12,7 +12,7 @@ var massive = require('massive');
 
 var app = module.exports = express();
 
-var Users = require("./models/users")
+var Users = require("./controllers/users")
 
 // passport-facebook:
 passport.use(new FaceStrategy({
@@ -35,14 +35,15 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 // Initialize Passport and restore authentication state, if any, from the session.
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(session({
   secret: process.env.SECRET_SECRET,
   resave: true,
   saveUninitialized: true }))
 
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
 // database
 var connectionString = "postgres://localhost/AspirationalVegetables";
 var db = massive.connectSync({connectionString: connectionString});
