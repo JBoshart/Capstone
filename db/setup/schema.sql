@@ -1,9 +1,11 @@
--- For local auth only at this point. Will change.
 DROP TABLE IF EXISTS users;
 CREATE TABLE users(
   id serial PRIMARY KEY,
-  email text,
-  password text,
+  facebook_id text,
+  pantry_id integer,
+  fridge_id integer,
+  freezer_id integer,
+  score integer
 )
 
 -- Example schema from previous project:

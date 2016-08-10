@@ -14,11 +14,12 @@ var UsersController = {
   getFacebookLogin: passport.authenticate('facebook'),
 
   getFacebookReturn: function(request, response) {
-    Users.findOrMakeUser(request.user.id, function (error, user_info) {
+    var facebook_id = request.user.id
+    Users.findOrMakeUser(facebook_id, function (error, user_info) {
       if (error) {
         var err = new Error
-        err.status = 500;
-        err.error = "Error retrieving customer's rental history."
+        err.status = error.status
+        err.error = error.message
         response.json(err)
       } else {
         locals = {user_info: request.user}

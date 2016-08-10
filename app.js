@@ -12,6 +12,11 @@ var massive = require('massive');
 
 var app = module.exports = express();
 
+// database
+var connectionString = "postgres://localhost/AspirationalVegetables";
+var db = massive.connectSync({connectionString: connectionString});
+app.set('db', db);
+
 var Users = require("./controllers/users")
 
 // passport-facebook:
@@ -43,11 +48,7 @@ app.use(session({
 
   app.use(passport.initialize());
   app.use(passport.session());
-  
-// database
-var connectionString = "postgres://localhost/AspirationalVegetables";
-var db = massive.connectSync({connectionString: connectionString});
-app.set('db', db);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

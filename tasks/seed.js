@@ -43,3 +43,4 @@ var db = massive.connectSync({connectionString : connectionString})
 // }
 //
 // make()
+process.exit()
