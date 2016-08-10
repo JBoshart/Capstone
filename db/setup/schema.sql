@@ -5,7 +5,9 @@ CREATE TABLE users(
   pantry_id integer,
   fridge_id integer,
   freezer_id integer,
-  score integer
+  score integer,
+  name text,
+  username text
 )
 
 -- Example schema from previous project:

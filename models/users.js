@@ -5,13 +5,12 @@ var Users = function() {
   // constructor? I dunno. I'm just following patterns at the moment. This will likely change.
 }
 
-Users.findOrMakeUser = function(facebook_id, callback) {
-  db.users.findOne({facebook_id: facebook_id}, function(error, user) {
-    console.log(user)
+Users.findOrMakeUser = function(sessionInfo, callback) {
+  db.users.findOne({facebook_id: sessionInfo.id}, function(error, user) {
     if (error) {
       callback(error || new Error("User could not be found or created"), undefined);
     } else if (!user) {
-      db.users.save({facebook_id: facebook_id}, function(error, newUser) {
+      db.users.save({name: sessionInfo.displayName, facebook_id: sessionInfo.id}, function(error, newUser) {
         if (error || !newUser) {
           callback(error || new Error("User could not be created"))
         } else {

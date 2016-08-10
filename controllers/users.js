@@ -14,16 +14,17 @@ var UsersController = {
   getFacebookLogin: passport.authenticate('facebook'),
 
   getFacebookReturn: function(request, response) {
-    var facebook_id = request.user.id
-    Users.findOrMakeUser(facebook_id, function (error, user_info) {
+    var sessionInfo = request.session.passport.user
+    Users.findOrMakeUser(sessionInfo, function (error, user_info) {
       if (error) {
         var err = new Error
         err.status = error.status
         err.error = error.message
         response.json(err)
       } else {
-        locals = {user_info: request.user}
-        response.render('profile', locals)
+        locals = {user_info}
+        console.log(request.session)
+        response.render('index', locals)
       }
     })
   },
