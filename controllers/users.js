@@ -4,11 +4,10 @@ var passport = require('passport');
 var UsersController = {
   getFacebookLogin: passport.authenticate('facebook'),
 
-  getFacebookReturn: passport.authenticate('facebook', { failureRedirect: '/' }),
-    function(request, response) {
-      console.log("I did it.")
-      response.redirect('/', request.user.user_id)
-    },
+  getFacebookReturn: function(request, response) {
+    console.log(request.user.id)
+    response.redirect(302, '/')
+  },
 
   getLogout: function(request, response) {
     request.logout()

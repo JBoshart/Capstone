@@ -6,6 +6,9 @@
  </head>
  <body>
    <div class="container">
+     <% if(user !== 0) { %>
+       <h1>You're logged in!</h1>
+     <% } %>
      <h1>Login or Register:</h1>
       <a href="/login/facebook" class="button">Join or Login With Facebook</a>
     </div>

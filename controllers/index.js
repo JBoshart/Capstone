@@ -1,6 +1,6 @@
 var IndexController = {
   getIndex: function(request, response) {
-    var locals = {}
+    var locals = {user: request.user || 0}
     response.render('index', locals)
   }
 }

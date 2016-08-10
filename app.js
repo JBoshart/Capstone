@@ -22,7 +22,7 @@ passport.use(new FaceStrategy({
 },
 function(accessToken, refreshToken, profile, cb) {
   var current_user = {}//Users.findOrMake(profile)
-  return cb(null, current_user)
+  return cb(null, profile)
 }));
 
 passport.serializeUser(function(user, cb) {

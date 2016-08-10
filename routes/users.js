@@ -4,7 +4,7 @@ var router = express.Router();
 var Controllers = require('../controllers/users')
 
 router.get('/login/facebook', Controllers.getFacebookLogin)
-router.get('/login/facebook/return', Controllers.getFacebookReturn)
+router.get('/login/facebook/return', passport.authenticate('facebook', { failureRedirect: '/' }), Controllers.getFacebookReturn)
 
 router.get('/profile', Controllers.getProfile)
 router.get('/logout', Controllers.getLogout)
