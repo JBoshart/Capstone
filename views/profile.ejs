@@ -1,3 +1,11 @@
-This is a profile.
 
-<%= locals.id %>
+<h1>Welcome <%= user.name %>!</h1>
+<div class="nav">
+  <a href="/logout" class="button">Logout</a>
+</div>
+
+<div class="dashboard">
+  <a href="/pantry" class="button">Create a Pantry!</a>
+  <a href="/fridge" class="button">Create a Fridge!</a>
+  <a href="/freezer" class="button">Create a Freezer!</a>
+</div>

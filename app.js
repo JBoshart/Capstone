@@ -17,7 +17,7 @@ var connectionString = "postgres://localhost/AspirationalVegetables";
 var db = massive.connectSync({connectionString: connectionString});
 app.set('db', db);
 
-var Users = require("./controllers/users")
+var UserModel = require('./models/users')
 
 // passport-facebook:
 passport.use(new FaceStrategy({
@@ -26,26 +26,26 @@ passport.use(new FaceStrategy({
   callbackURL: 'http://localhost:3000/login/facebook/return'
 },
 function(accessToken, refreshToken, profile, cb) {
-  var current_user = {}//Users.findOrMake(profile)
-  return cb(null, profile)
+  UserModel.findOrMakeUser(profile, function (error, user_info) {
+  return cb(null, user_info)
+  })
 }));
 
 passport.serializeUser(function(user, cb) {
-  cb(null, user);
+  cb(null, user.id);
 });
 
-passport.deserializeUser(function(obj, cb) {
-  var current_user = {}//Users.findOrMake(obj)
-  cb(null, current_user);
+passport.deserializeUser(function(id, cb) {
+  db.users.findOne({id: id}, function(error, user) {
+    cb(error, user);
+  })
 });
-
-// Initialize Passport and restore authentication state, if any, from the session.
 
 app.use(session({
   secret: process.env.SECRET_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }}))
+  cookie: { secure: 'auto' }}))
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,7 +59,6 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes

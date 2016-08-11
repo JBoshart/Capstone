@@ -1,7 +1,10 @@
 var IndexController = {
   getIndex: function(request, response) {
-    var locals = {user: request.session.passport || 0}
-    response.render('index', locals)
+    if(request.user) {
+      response.render('profile', {user: request.user})
+    } else {
+      response.render('index')
+    }
   }
 }
 
