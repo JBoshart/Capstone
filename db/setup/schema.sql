@@ -8,26 +8,22 @@ CREATE TABLE users(
   score integer,
   name text,
   username text
-)
+);
 
--- Example schema from previous project:
--- DROP TABLE IF EXISTS videos;
--- CREATE TABLE videos(
---   id serial PRIMARY KEY,
---   title text,
---   overview text,
---   release_date date,
---   inventory integer,
---   available_inventory integer
--- );
---
--- DROP TABLE IF EXISTS rentals;
--- CREATE TABLE rentals(
---   id serial PRIMARY KEY,
---   customer_id integer,
---   video_id integer,
---   checkout_date date,
---   due_date date,
---   checkin_date date,
---   charge decimal(9,2)
--- )
+DROP TABLE IF EXISTS fridge;
+CREATE TABLE fridge(
+  id serial PRIMARY KEY,
+  user_id integer
+);
+
+DROP TABLE IF EXISTS items;
+CREATE TABLE items(
+  id serial PRIMARY KEY,
+  user_id integer,
+  fridge_id integer,
+  name text,
+  quantity integer,
+  quantity_unit text,
+  purchase_date date,
+  expiration date
+);
