@@ -3,3 +3,26 @@ Fridge.
 <%= user.name %>
 <%= fridge_id %>
 <%= items %>
+
+<h2>Add Items:</h2>
+<form action='/items' method="post">
+  <fieldset>
+    <label for="item">Item:</label>
+    <input type="text" name="item" />
+  </br>
+    <label for="quantity">Amount of Item:</label>
+    <input type="number" name="quantity"/>
+  </br>
+    <label for="unit">Unit:</label>
+    <select name="Unit">
+      <option value="ounce">ounce(s)</option>
+      <option value="cups">cup(s)</option>
+      <option value="pint">pint(s)</option>
+      <option value="quart">quart(s)</option>
+      <option value="gallon">gallon(s)</option>
+      <option value="mL">millilitre(s)</option>
+      <option value="litre">litre(s)</option>
+    </select>
+  <input type="submit" value="Add" />
+  </fieldset>
+</form>

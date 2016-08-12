@@ -4,7 +4,6 @@ var db = app.get("db");
 var Fridge = function() {}
 
 Fridge.findOrMakeFridge = function(userID, callback) {
-  console.log('got to model')
   db.fridge.findOne({user_id: userID}, function(error, fridge) {
     if (error) {
       callback(error, undefined);
@@ -22,10 +21,10 @@ Fridge.findOrMakeFridge = function(userID, callback) {
           callback(error, undefined)
         } else {
           let stuff = {
-            fridge: fridge,
+            user_id: fridge.user_id,
+            fridge_id: fridge.id,
             items: items
           }
-          console.log(stuff)
           callback(null, stuff)
         }
       })
