@@ -8,11 +8,17 @@ Fridge.findOrMakeFridge = function(userID, callback) {
     if (error) {
       callback(error, undefined);
     } else if (!fridge) {
-      db.fridge.save({user_id: userID}, function(error, newFridge) {
+      db.fridge.save({user_id: userID, items_quantity: 0}, function(error, newFridge) {
         if (error || !newFridge) {
           callback(error, undefined)
         } else {
-          callback(null, newFridge)
+          db.users.update({id: userID, fridge_id: newFridge.id}, function(error, user) {
+            if (error) {
+              callback(error, undefined)
+            } else {
+              callback(null, newFridge)
+            }
+          })
         }
       })
     } else {
@@ -20,12 +26,13 @@ Fridge.findOrMakeFridge = function(userID, callback) {
         if (error) {
           callback(error, undefined)
         } else {
-          let stuff = {
+          let locals = {
             user_id: fridge.user_id,
             fridge_id: fridge.id,
+            items_quantity: fridge.items_quantity,
             items: items
           }
-          callback(null, stuff)
+          callback(null, locals)
         }
       })
     }

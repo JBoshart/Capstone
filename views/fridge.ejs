@@ -1,8 +1,26 @@
 Fridge.
 
+User.name:
 <%= user.name %>
-<%= fridge_id %>
-<%= items %>
+</br>
+
+<table class="contents" border="1">
+<tr>
+<th>Item Name</th>
+<th>Amount on Hand</th>
+<th>Added On</th>
+<th>Expires On</th>
+</tr>
+<% for (var i=0; i<locals.items.length; i++) { %>
+  <tr>
+  <td><%= locals.items[i].name %></td>
+  <td><%= locals.items[i].quantity %> <%= locals.items[i].quantity_unit %></td>
+  <td><%= locals.items[i].purchase_date %></td>
+  <td><%= locals.items[i].expiration %></td>
+</tr>
+<% } %>
+</table>
+
 
 <h2>Add Items:</h2>
 <form action='/items' method="post">

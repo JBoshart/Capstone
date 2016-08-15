@@ -13,7 +13,8 @@ CREATE TABLE users(
 DROP TABLE IF EXISTS fridge;
 CREATE TABLE fridge(
   id serial PRIMARY KEY,
-  user_id integer
+  user_id integer,
+  items_quantity integer
 );
 
 DROP TABLE IF EXISTS items;
