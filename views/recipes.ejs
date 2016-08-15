@@ -1,0 +1,8 @@
+Challenge!
+
+What do you want to make?
+
+<% for (var index in locals) { %>
+  <% var id = locals[index].id %>
+  <a href="recipes/<%=id%>"><%= locals[index].title %></a>
+<% } %>
