@@ -9,6 +9,7 @@ var dotenv = require('dotenv').config()
 var passport = require('passport');
 var FaceStrategy = require('passport-facebook').Strategy;
 var massive = require('massive');
+var $ = require('jQuery')
 
 var app = module.exports = express();
 
