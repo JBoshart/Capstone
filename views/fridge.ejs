@@ -37,7 +37,7 @@
       </select>
     </br>
       <label for="expiration">Expiration Date:</label>
-      <input type="date" name="expiration" />
+      <input id="date-control" type="date" name="expiration" value="" required />
       <input type="submit" value="Add" />
     </fieldset>
   </form>
@@ -55,8 +55,8 @@
       <tr>
         <td><%= locals.items[i].name %></td>
         <td><%= locals.items[i].quantity %> <%= locals.items[i].quantity_unit %></td>
-        <td><%= locals.items[i].purchase_date %></td>
-        <td><%= locals.items[i].expiration %></td>
+        <td><%= locals.items[i].purchase_date.toLocaleDateString() %></td>
+        <td><%= locals.items[i].expiration.toLocaleDateString() %></td>
       </tr>
       <% } %>
     </table>
