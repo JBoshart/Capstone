@@ -3,12 +3,10 @@ var passport = require('passport');
 var unirest = require('unirest')
 var dotenv = require('dotenv').config()
 
-var ingredients = "apples,flour,sugar"
-
 var RecipesController = {
 
   getRecipes: function(request, response) {
-    Recipes.getBasic(ingredients, function (error, basic_info) {
+    Recipes.getBasic(request.body, request.user, function (error, basic_info) {
       if(error) {
         var err = new Error
         err.status = 500

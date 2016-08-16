@@ -8,7 +8,7 @@ Users.findOrMakeUser = function(sessionInfo, callback) {
     if (error) {
       callback(error, undefined);
     } else if (!user) {
-      db.users.save({name: sessionInfo.displayName, facebook_id: sessionInfo.id}, function(error, newUser) {
+      db.users.save({name: sessionInfo.displayName, facebook_id: sessionInfo.id, score: 0}, function(error, newUser) {
         if (error || !newUser) {
           callback(error, undefined)
         } else {

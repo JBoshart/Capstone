@@ -12,12 +12,22 @@ var advanced_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/r
 var advanced_rest = "/analyzedInstructions?stepBreakdown=true"
 
 
-Recipes.getBasic = function (ingredients, callback) {
-  unirest.get(url + ingredients + rest_of_url)
-  .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
-  .header("Accept", "application/json")
-  .end(function (result) {
-    callback(null, result.body)
+Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
+  db.items.where("user_id=$1 ORDER BY expiration DESC LIMIT $2", [sessionInfo.id, limitInfo.items], function(error, items) {
+    // Format for search query:
+    var ingredients = ""
+    for (var i=0; i<items.length; i++) {
+      ingredients += items[i].name + ","
+    }
+    ingredients = ingredients.slice(0, -1)
+
+    // search API:
+    unirest.get(basic_url + ingredients + basic_rest)
+    .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
+    .header("Accept", "application/json")
+    .end(function (result) {
+      callback(null, result.body)
+    })
   })
 }
 

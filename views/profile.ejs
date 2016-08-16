@@ -19,6 +19,16 @@
     </div>
 
     <div class="dashboard">
-      <a href="/fridge" class="button">Create a Fridge!</a>
+      <a href="/fridge" class="button">What's in the Fridge?</a>
+
+      <form action='/recipes' method="post">
+        <fieldset>
+          <label for="items">How many items?</label>
+          <input type="number" name="items" min="1" max="5" />
+          <label for="options">How many options?</label>
+          <input type="number" name="options" min="1" max="5" />
+          <input type="submit" value="Play a Challenge!" />
+        </fieldset>
+      </form>
     </div>
   </body>
