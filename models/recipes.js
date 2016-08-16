@@ -6,7 +6,7 @@ var dotenv = require('dotenv').config()
 var Recipes = function() {}
 
 var basic_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="
-var basic_rest = "&limitLicense=true&number=5&ranking=1"
+var basic_rest = "&limitLicense=true&number="
 
 var advanced_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
 var advanced_rest = "/analyzedInstructions?stepBreakdown=true"
@@ -22,7 +22,7 @@ Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
     ingredients = ingredients.slice(0, -1)
 
     // search API:
-    unirest.get(basic_url + ingredients + basic_rest)
+    unirest.get(basic_url + ingredients + basic_rest + limitInfo.options + "&ranking=1")
     .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
     .header("Accept", "application/json")
     .end(function (result) {
