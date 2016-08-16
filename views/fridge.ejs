@@ -4,6 +4,7 @@ User.name:
 <%= user.name %>
 </br>
 
+<% if (locals.items) { %>
 <table class="contents" border="1">
 <tr>
 <th>Item Name</th>
@@ -20,6 +21,7 @@ User.name:
 </tr>
 <% } %>
 </table>
+<% } %>
 
 
 <h2>Add Items:</h2>
@@ -41,6 +43,9 @@ User.name:
       <option value="mL">millilitre(s)</option>
       <option value="litre">litre(s)</option>
     </select>
+  </br>
+    <label for="expiration">Expiration Date:</label>
+    <input type="date" name="expiration" />
   <input type="submit" value="Add" />
   </fieldset>
 </form>

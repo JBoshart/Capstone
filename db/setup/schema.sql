@@ -28,3 +28,11 @@ CREATE TABLE items(
   purchase_date date,
   expiration date
 );
+
+DROP TABLE IF EXISTS recipes;
+CREATE TABLE recipes(
+  id serial PRIMARY KEY,
+  user_id integer,
+  name text,
+  steps text
+);
