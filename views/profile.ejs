@@ -1,10 +1,24 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Aspirational Vegetables</title>
+   <link rel='stylesheet' href='/stylesheets/style.css' />
+   <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+   <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+   <script type="text/javascript" src="/javascripts/aspirationalvegetables.js"></script>
+ </head>
+ <header>
 
-<h1>Welcome <%= user.name %>!</h1>
-<div class="nav">
-  <h2>Score: <%= user.score %></h2>
-  <a href="/logout" class="button">Logout</a>
-</div>
+ </header>
+ <body>
 
-<div class="dashboard">
-  <a href="/fridge" class="button">Create a Fridge!</a>
-</div>
+   <h1>Welcome <%= user.name %>!</h1>
+    <div class="nav">
+      <h2>Score: <%= user.score %></h2>
+      <a href="/logout" class="button">Logout</a>
+    </div>
+
+    <div class="dashboard">
+      <a href="/fridge" class="button">Create a Fridge!</a>
+    </div>
+  </body>
