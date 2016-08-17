@@ -12,14 +12,17 @@
  </header>
  <body>
 
-
 <h1>Here's Your Challenge!</h1>
 
-What do you want to make?
-
-<% for (var index in locals) { %>
-  <% var id = locals[index].id %>
-  <a href="recipes/<%=id%>"><%= locals[index].title %></a>
+<% if (locals.basic === true) { %>
+  <h1>What would you like to make?</h1>
+<% for (var index in locals.recipes) { %>
+  <% var id = locals.recipes[index].id %>
+  <!--  locals.[index] + .id, .title, .image (jpg), .usedIngredientCount, .missedIngredientCount, .likes-->
+  <a href="recipes/<%=id%>"><%= locals.recipes[index].title %></a>
 <% } %>
+<% } else { %>
+  <%= locals.time %>
+  <% } %>
 
 </body>

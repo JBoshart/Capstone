@@ -26,7 +26,11 @@ Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
     .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
     .header("Accept", "application/json")
     .end(function (result) {
-      callback(null, result.body)
+      var locals = {
+        basic: true,
+        recipes: result.body
+      }
+      callback(null, locals)
     })
   })
 }
@@ -36,7 +40,6 @@ Recipes.getAdvanced = function (recipe_id, callback) {
   .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
   .end(function (result) {
     var ingredients = result.body.extendedIngredients
-    var instructions = result.body.instructions
     var ingredients_condensed = []
 
     // Distill out only needed info:
@@ -50,8 +53,11 @@ Recipes.getAdvanced = function (recipe_id, callback) {
       ingredients_condensed.push(ingredient)
     }
     compiled = {
+      title: result.body.title,
+      image: result.body.image,
+      time: result.body.readyInMinutes,
       ingredients: ingredients_condensed,
-      instructions: instructions
+      instructions: result.body.instructions
     }
     callback(null, compiled)
   });
