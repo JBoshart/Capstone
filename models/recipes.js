@@ -28,7 +28,8 @@ Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
     .end(function (result) {
       var locals = {
         basic: true,
-        recipes: result.body
+        recipes: result.body,
+        itemNumber: limitInfo.items
       }
       callback(null, locals)
     })

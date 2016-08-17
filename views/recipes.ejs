@@ -12,17 +12,38 @@
  </header>
  <body>
 
-<h1>Here's Your Challenge!</h1>
+<h1>Challenge!</h1>
 
 <% if (locals.basic === true) { %>
-  <h1>What would you like to make?</h1>
-<% for (var index in locals.recipes) { %>
-  <% var id = locals.recipes[index].id %>
-  <!--  locals.[index] + .id, .title, .image (jpg), .usedIngredientCount, .missedIngredientCount, .likes-->
-  <a href="recipes/<%=id%>"><%= locals.recipes[index].title %></a>
-<% } %>
+  <div id="recipe-options">
+    <h2>What would you like to make?</h2>
+      <ul>
+      <% for (var i in locals.recipes) { %>
+        <div id="option-<%=i%>" onclick='window.location.href="recipes/<%=locals.recipes[i].id%>"'>
+          <li id="option-image"><image src="<%= locals.recipes[i].image %>"></li>
+          <li id="option-title"><%= locals.recipes[i].title %></li>
+          <li id="option-uses">Uses <%= locals.recipes[i].usedIngredientCount %> of <%= locals.itemNumber %> requested ingredients.</li>
+        </div>
+      <% } %>
+      </ul>
+    </div>
+
 <% } else { %>
-  <%= locals.time %>
+  <div id="selected-recipe">
+    <ul>
+      <li id="selected-title"><%= locals.title %></li>
+      <li id="selected-image"><img src="<%=locals.image%>"></li>
+      <li id="selected-time">Prep-time: <%= locals.time %> Minutes</li>
+      <li id="selected-ingredients">
+        <ul id="selected-ingredient-list">
+          <% for (var i=0; i<locals.ingredients.length; i++) { %>
+          <li><%= locals.ingredients[i].inText %></li>
+          <% } %>
+        </ul>
+      </li>
+      <li id="selected-instructions"><%= locals.instructions %></li>
+    </ul>
+  </div>
   <% } %>
 
 </body>
