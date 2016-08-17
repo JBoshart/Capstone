@@ -9,7 +9,7 @@ var basic_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/reci
 var basic_rest = "&limitLicense=true&number="
 
 var advanced_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
-var advanced_rest = "/analyzedInstructions?stepBreakdown=true"
+var advanced_rest = "/information?includeNutrition=false"
 
 
 Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
@@ -33,19 +33,28 @@ Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
 
 Recipes.getAdvanced = function (recipe_id, callback) {
   unirest.get(advanced_url + recipe_id + advanced_rest)
- .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
- .header("Accept", "application/json")
- .end(function (res) {
-    var steps = res.body[0].steps
-    var instructions = {}
+  .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
+  .end(function (result) {
+    var ingredients = result.body.extendedIngredients
+    var instructions = result.body.instructions
+    var ingredients_condensed = []
 
-    // extract needed info:
-    for (var i=0; i<steps.length; i++) {
-      instructions[i] = steps[i].step
+    // Distill out only needed info:
+    for (var i=0; i<ingredients.length; i++) {
+      var ingredient = {
+        name: ingredients[i].name,
+        quantity: ingredients[i].amount,
+        unit: ingredients[i].unit,
+        inText: ingredients[i].originalString
+      }
+      ingredients_condensed.push(ingredient)
     }
-
-    callback(null, instructions)
- });
+    compiled = {
+      ingredients: ingredients_condensed,
+      instructions: instructions
+    }
+    callback(null, compiled)
+  });
 }
 
 module.exports = Recipes
