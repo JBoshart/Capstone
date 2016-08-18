@@ -43,6 +43,12 @@
       </li>
       <li id="selected-instructions"><%= locals.instructions %></li>
     </ul>
+    <form action="/items/subtract" method="post">
+      <input type="hidden" value="<%=locals.id%>" name="butts"/>
+      <input type="submit" value="I made this!" />
+    </form>
+    <a href="favorite" class="button">Save this recipe for me to make again!</a>
+    <a href="/profile" class="button">I don't want to make this! Take me back!</a>
   </div>
   <% } %>
 

@@ -53,7 +53,11 @@ Recipes.getAdvanced = function (recipe_id, callback) {
       }
       ingredients_condensed.push(ingredient)
     }
+
+    console.log(ingredients_condensed)
+
     compiled = {
+      id: result.body.id,
       title: result.body.title,
       image: result.body.image,
       time: result.body.readyInMinutes,

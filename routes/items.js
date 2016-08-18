@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Controllers = require('../controllers/items')
 
-/* GET home page. */
 router.post('/items', Controllers.addItems);
+router.post('/items/subtract', Controllers.subtractItems)
 
 module.exports = router;

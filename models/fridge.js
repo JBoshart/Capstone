@@ -26,6 +26,18 @@ Fridge.findOrMakeFridge = function(userID, callback) {
         if (error) {
           callback(error, undefined)
         } else {
+          for (var i=0; i<items.length; i++) {
+            if (items[i].quantity_unit === "cups") {
+              items[i].quantity = (items[i].quantity/8)
+            } else if (items[i].quantity_unit === "pint") {
+              items[i].quantity = (items[i].quantity/16)
+            } else if (items[i].quantity_unit === "quart") {
+              items[i].quantity = (items[i].quantity/32)
+            } else if (items[i].quantity_unit === "gallon") {
+              items[i].quantity = (items[i].quantity/128)
+            }
+          }
+
           let locals = {
             user_id: fridge.user_id,
             fridge_id: fridge.id,

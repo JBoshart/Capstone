@@ -14,6 +14,19 @@ var ItemsController = {
         response.redirect('/fridge')
       }
     })
+  },
+
+  subtractItems: function(request, response) {
+    Items.removeItems(request.body, request.user, function(error, item) {
+      if(error) {
+        var err = new Error
+        err.status = 500
+        err.error = "Error removing item."
+        response.json(err)
+      } else {
+        response.redirect('/profile')
+      }
+    })
   }
 }
 
