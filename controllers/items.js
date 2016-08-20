@@ -17,13 +17,14 @@ var ItemsController = {
   },
 
   subtractItems: function(request, response) {
-    Items.removeItems(request.body, request.user, function(error, item) {
+    Items.removeItems(request.body.recipe_id, request.user, function(error, item) {
       if(error) {
         var err = new Error
         err.status = 500
-        err.error = "Error removing item."
+        err.error = "Error removing item: " + error.message
         response.json(err)
       } else {
+        console.log("yay!")
         response.redirect('/profile')
       }
     })

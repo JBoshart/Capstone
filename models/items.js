@@ -1,5 +1,8 @@
 var app = require("../app");
 var db = app.get("db");
+var unirest = require('unirest')
+var dotenv = require('dotenv').config()
+var Promise = require('bluebird')
 var advanced_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
 var advanced_rest = "/information?includeNutrition=false"
 
@@ -28,12 +31,13 @@ Items.addOrMakeItems = function(formData, userData, callback) {
   })
 }
 
-Items.subtractItems = function (recipe_id, userData, callback) {
+Items.removeItems = function (recipe_id, userData, callback) {
   unirest.get(advanced_url + recipe_id + advanced_rest)
   .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
   .end(function (result) {
     var ingredients = result.body.extendedIngredients
-    var ingredients_condensed = []
+    var condensed = []
+    var sad_data = []
 
     // Distill out only needed info:
     for (var i=0; i<ingredients.length; i++) {
@@ -41,18 +45,67 @@ Items.subtractItems = function (recipe_id, userData, callback) {
         name: ingredients[i].name,
         quantity: ingredients[i].amount,
         unit: ingredients[i].unit,
-        inText: ingredients[i].originalString
       }
-      ingredients_condensed.push(ingredient)
+      condensed.push(ingredient)
     }
 
-    // remove items from db, one by one:
-    // for (var i=0; i<ingredients_condensed.length; i++) {
-    //   if (ingredients_condensed[i].unit === "")
-    // }
-    db.items.where("user_id=$1 AND name=$2", [userData.id, ingredients_condensed[i].name])
+    for (var i=0; i<condensed.length; i++) {
+      if (condensed[i].unit === "ounce" || condensed[i].unit === "ounces" || condensed[i].unit === "oz") {
+        condensed[i].unit = "ounce(s)"
+      } else if (condensed[i].unit === "cup" || condensed[i].unit === "cups") {
+        condensed[i].quantity = (condensed[i].quantity * 8)
+      } else if (condensed[i].unit === "pint" || condensed[i].unit === "pints") {
+        condensed[i].quantity = (condensed[i].quantity * 16)
+      } else if (condensed[i].unit === "quart" || condensed[i].unit === "quarts") {
+        condensed[i].quantity = (condensed[i].quantity * 32)
+      } else if (condensed[i].unit === "gallon" || condensed[i].unit === "gallons") {
+        condensed[i].quantity = (condensed[i].quantity * 128)
+      } else if (condensed[i].unit === "teaspoon" || condensed[i].unit === "teaspoons"){
+        condensed[i].quantity = (condensed[i].quantity * .166667)
+      } else if (condensed[i].unit === "tablespoon" || condensed[i].unit === "tablespoons") {
+        condensed[i].quantity = (condensed[i].quantity * .5)
+      } else {
+        sad_data.push(condensed[i])
+        condensed.splice(i, 1)
+        i--
+      }
+    }
 
-  });
+    var promises = []
+
+    // remove items from db, one by one:
+    for (var i=0; i<condensed.length; i++) {
+      (function(i) {
+        var promise = new Promise(function(resolve, reject) {
+          db.items.where("user_id=$1 AND name=$2", [userData.id, condensed[i].name], function(error, result) {
+            if (error || (result.length === 0)) {
+              sad_data.push(condensed[i])
+              resolve()
+            } else {
+              console.log(result)
+              console.log(result.quantity - condensed[i].quantity)
+              db.items.save({id: result.id, quantity: (result.quantity - condensed[i].quantity)}, function(error, saved) {
+                if (error) {
+                  reject(error)
+                } else {
+                  resolve()
+                }
+              })
+            }
+          })
+        })
+        promises.push(promise)
+      })(i)
+    }
+    Promise.all(promises).then(
+      function() {
+        callback(null, sad_data)
+      },
+      function(error) {
+        callback(error, undefined)
+      }
+    )
+  })
 }
 
 module.exports = Items
