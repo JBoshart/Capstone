@@ -11,7 +11,7 @@ var ItemsController = {
         err.error = "Error adding item to fridge."
         response.json(err)
       } else {
-        response.redirect('/fridge')
+        response.redirect('/profile')
       }
     })
   },
@@ -24,7 +24,6 @@ var ItemsController = {
         err.error = "Error removing item: " + error.message
         response.json(err)
       } else {
-        console.log("yay!")
         response.redirect('/profile')
       }
     })
