@@ -17,7 +17,7 @@ var ItemsController = {
   },
 
   subtractItems: function(request, response) {
-    Items.removeItems(request.body.recipe_id, request.user, function(error, item) {
+    Items.removeItems(request.body.recipe_id, request.body.recipe_score, request.user, function(error, item) {
       if(error) {
         var err = new Error
         err.status = 500

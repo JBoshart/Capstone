@@ -31,7 +31,7 @@ Items.addOrMakeItems = function(formData, userData, callback) {
   })
 }
 
-Items.removeItems = function (recipe_id, userData, callback) {
+Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
   unirest.get(advanced_url + recipe_id + advanced_rest)
   .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
   .end(function (result) {
@@ -72,6 +72,24 @@ Items.removeItems = function (recipe_id, userData, callback) {
     }
 
     var promises = []
+
+    // add score to users account
+      var promise = new Promise(function(resolve, reject) {
+        db.users.findOne({id: userData.id}, function(error, result) {
+          if (error) {
+            reject()
+          } else {
+            db.users.save({id: result.id, score: (result.score + Number(recipe_score))}, function(error, result) {
+              if (error) {
+                reject()
+              } else {
+                resolve()
+              }
+            })
+          }
+        })
+      })
+      promises.push(promise)
 
     // remove items from db, one by one:
     for (var i=0; i<condensed.length; i++) {

@@ -19,10 +19,12 @@
     <h2>What would you like to make?</h2>
       <ul>
       <% for (var i in locals.recipes) { %>
-        <div id="option-<%=i%>" onclick='window.location.href="recipes/<%=locals.recipes[i].id%>"'>
+        <% var possible = (locals.base_score * locals.recipes[i].usedIngredientCount) %>
+        <div id="option-<%=i%>" onclick='window.location.href="recipes/<%=locals.recipes[i].id%>/<%=possible%>"'>
           <li id="option-image"><image src="<%= locals.recipes[i].image %>"></li>
           <li id="option-title"><%= locals.recipes[i].title %></li>
           <li id="option-uses">Uses <%= locals.recipes[i].usedIngredientCount %> of <%= locals.itemNumber %> requested ingredients.</li>
+          <li id="option-score">Point value: <%= possible %></li>
         </div>
       <% } %>
       </ul>
@@ -45,6 +47,7 @@
     </ul>
     <form action="/items/subtract" method="post">
       <input type="hidden" value="<%=locals.id%>" name="recipe_id"/>
+      <input type="hidden" value="<%=locals.score%>" name="recipe_score"/>
       <input type="submit" value="I made this!" />
     </form>
     <a href="favorite" class="button">Save this recipe for me to make again!</a>

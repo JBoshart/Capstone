@@ -4,6 +4,6 @@ var Controllers = require('../controllers/recipes')
 
 /* GET home page. */
 router.post('/recipes', Controllers.getRecipes);
-router.get('/recipes/:id', Controllers.getInstructions)
+router.get('/recipes/:id/:score', Controllers.getInstructions)
 
 module.exports = router;

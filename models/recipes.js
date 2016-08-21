@@ -28,6 +28,7 @@ Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
     .end(function (result) {
       var locals = {
         basic: true,
+        base_score: ((6 - limitInfo.options) * 100),
         recipes: result.body,
         itemNumber: limitInfo.items
       }
@@ -36,7 +37,7 @@ Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
   })
 }
 
-Recipes.getAdvanced = function (recipe_id, callback) {
+Recipes.getAdvanced = function (recipe_id, score, callback) {
   unirest.get(advanced_url + recipe_id + advanced_rest)
   .header("X-Mashape-Key", process.env.X_MASHAPE_KEY)
   .end(function (result) {
@@ -56,6 +57,7 @@ Recipes.getAdvanced = function (recipe_id, callback) {
 
     compiled = {
       id: result.body.id,
+      score: score,
       title: result.body.title,
       image: result.body.image,
       time: result.body.readyInMinutes,
