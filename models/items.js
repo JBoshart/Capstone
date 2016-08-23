@@ -43,6 +43,7 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
     for (var i=0; i<ingredients.length; i++) {
       var ingredient = {
         name: ingredients[i].name,
+        text: ingredients[i].originalString,
         quantity: ingredients[i].amount,
         unit: ingredients[i].unit,
       }
@@ -100,8 +101,6 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
               sad_data.push(condensed[i])
               resolve()
             } else {
-              console.log(result)
-              console.log(result.quantity - condensed[i].quantity)
               db.items.save({id: result.id, quantity: (result.quantity - condensed[i].quantity)}, function(error, saved) {
                 if (error) {
                   reject(error)
@@ -115,15 +114,83 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
         promises.push(promise)
       })(i)
     }
+
+    if (sad_data.length !== 0) {
+      var promise = new Promise(function(resolve, reject) {
+        db.items.find({user_id: userData.id}, function(error, result) {
+          if (error) {
+            reject(error)
+          } else {
+            final = {
+              fridge: result,
+              update: sad_data
+            }
+            resolve()
+          }
+        })
+      })
+      promises.push(promise)
+    }
     Promise.all(promises).then(
       function() {
-        callback(null, sad_data)
+        callback(null, final)
       },
       function(error) {
         callback(error, undefined)
       }
     )
   })
+}
+
+Items.removeManual = function(form, user, callback) {
+  for (var x=0; x<form.item.length; x++) {
+    if (form.item[x] === "none") {
+      form.item.splice(x, 1)
+      form.unit.splice(x, 1)
+      form.quantity.splice(x, 1)
+      x--
+    }
+  }
+
+  var promises = []
+  for (var i=0; i<form.item.length; i++) {
+    (function(i) {
+      var promise = new Promise(function(resolve, reject) {
+        if (form.unit[i] === "cups") {
+          form.quantity[i] = (Number(form.quantity[i]) * 8)
+        } else if (form.unit[i] === "pint") {
+          form.quantity[i] = (Number(form.quantity[i]) * 16)
+        } else if (form.unit[i] === "quart") {
+          form.quantity[i] = (Number(form.quantity[i]) * 32)
+        } else if (form.unit[i] === "gallon") {
+          form.quantity[i] = (Number(form.quantity[i]) * 128)
+        }
+
+        db.items.findOne({id: Number(form.item[i])}, function(error, item) {
+          if (error) {
+            reject(error)
+          } else {
+            db.items.save({id: item.id, quantity: (item.quantity - form.quantity[i])}, function(error, saved) {
+              if (error) {
+                reject(error)
+              } else {
+                resolve()
+              }
+            })
+          }
+        })
+      })
+      promises.push(promise)
+    })(i)
+  }
+  Promise.all(promises).then(
+    function() {
+      callback(null, undefined)
+    },
+    function(error) {
+      callback(error, undefined)
+    }
+  )
 }
 
 module.exports = Items

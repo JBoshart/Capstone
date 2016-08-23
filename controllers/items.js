@@ -17,14 +17,29 @@ var ItemsController = {
   },
 
   subtractItems: function(request, response) {
-    Items.removeItems(request.body.recipe_id, request.body.recipe_score, request.user, function(error, item) {
+    Items.removeItems(request.body.recipe_id, request.body.recipe_score, request.user, function(error, items) {
+      if(error) {
+        var err = new Error
+        err.status = 500
+        err.error = "Error removing item: " + error.message
+        response.json(err)
+      } else if (items.update.length !== 0) {
+        response.render("recipes", items)
+      } else {
+        response.redirect("/profile")
+      }
+    })
+  },
+
+  manualUpdate: function(request, response) {
+    Items.removeManual(request.body, request.user, function(error, items) {
       if(error) {
         var err = new Error
         err.status = 500
         err.error = "Error removing item: " + error.message
         response.json(err)
       } else {
-        response.redirect('/profile')
+        response.redirect("/profile")
       }
     })
   }

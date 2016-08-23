@@ -30,7 +30,7 @@
       </ul>
     </div>
 
-<% } else { %>
+<% } else if (locals.advanced === true) { %>
   <div id="selected-recipe">
     <ul>
       <li id="selected-title"><%= locals.title %></li>
@@ -53,6 +53,47 @@
     <a href="favorite" class="button">Save this recipe for me to make again!</a>
     <a href="/profile" class="button">I don't want to make this! Take me back!</a>
   </div>
-  <% } %>
-
+  <% } else { %>
+    <div class="manual-update">
+      <form action="/items/manual" method="post">
+        <fieldset>
+          Great job! The recipe had some ingredients we couldn't find in your fridge. Can you let us know if we missed something? Select the correct fridge item for each ingredient.
+          <table class="manual" border="1">
+            <tr>
+              <th>Ingredients</th>
+              <th>Fridge Items</th>
+              <th>Unit</th>
+              <th>Amount Used</th>
+            </tr>
+            <% for (var i=0; i<locals.update.length; i++) { %>
+              <tr>
+                <td><%= locals.update[i].text %></td>
+                <td>
+                  <select name="item">
+                    <option value="none">Not in my fridge!</option>
+                    <% for (var ii=0; ii<locals.fridge.length; ii++) { %>
+                      <option value="<%=locals.fridge[ii].id%>"><%=locals.fridge[ii].name%></option>
+                    <% } %>
+                  </select>
+                </td>
+                <td>
+                  <select name="unit">
+                    <option value="ounce(s)">ounce(s)</option>
+                    <option value="cups">cup(s)</option>
+                    <option value="pint">pint(s)</option>
+                    <option value="quart">quart(s)</option>
+                    <option value="gallon">gallon(s)</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" name="quantity" />
+                </td>
+              </tr>
+              <% } %>
+          </table>
+          <input type="submit" value="Update My Fridge!" />
+        </fieldset>
+      </form>
+    </div>
+    <% } %>
 </body>

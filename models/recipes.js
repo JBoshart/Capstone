@@ -56,6 +56,7 @@ Recipes.getAdvanced = function (recipe_id, score, callback) {
     }
 
     compiled = {
+      advanced: true,
       id: result.body.id,
       score: score,
       title: result.body.title,
