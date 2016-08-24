@@ -23,7 +23,7 @@ var ItemsController = {
         err.status = 500
         err.error = "Error removing item: " + error.message
         response.json(err)
-      } else if (items.update.length !== 0) {
+      } else if (items !== null) {
         response.render("recipes", items)
       } else {
         response.redirect("/profile")

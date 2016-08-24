@@ -3,6 +3,7 @@
  <head>
    <title>Aspirational Vegetables</title>
    <link rel='stylesheet' href='/stylesheets/style.css' />
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
    <script type="text/javascript" src="/javascripts/aspirationalvegetables.js"></script>
@@ -43,14 +44,13 @@
           <% } %>
         </ul>
       </li>
-      <li id="selected-instructions"><%= locals.instructions %></li>
+      <li id="selected-instructions"><%- locals.instructions %></li>
     </ul>
     <form action="/items/subtract" method="post">
       <input type="hidden" value="<%=locals.id%>" name="recipe_id"/>
       <input type="hidden" value="<%=locals.score%>" name="recipe_score"/>
       <input type="submit" value="I made this!" />
     </form>
-    <a href="favorite" class="button">Save this recipe for me to make again!</a>
     <a href="/profile" class="button">I don't want to make this! Take me back!</a>
   </div>
   <% } else { %>

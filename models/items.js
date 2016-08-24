@@ -101,7 +101,7 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
               sad_data.push(condensed[i])
               resolve()
             } else {
-              db.items.save({id: result.id, quantity: (result.quantity - condensed[i].quantity)}, function(error, saved) {
+              db.items.save({id: result[0].id, quantity: (result[0].quantity - condensed[i].quantity)}, function(error, saved) {
                 if (error) {
                   reject(error)
                 } else {
@@ -114,26 +114,24 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
         promises.push(promise)
       })(i)
     }
-
-    if (sad_data.length !== 0) {
-      var promise = new Promise(function(resolve, reject) {
-        db.items.find({user_id: userData.id}, function(error, result) {
-          if (error) {
-            reject(error)
-          } else {
-            final = {
-              fridge: result,
-              update: sad_data
-            }
-            resolve()
-          }
-        })
-      })
-      promises.push(promise)
-    }
     Promise.all(promises).then(
       function() {
-        callback(null, final)
+        if (sad_data.length !== 0) {
+          db.items.find({user_id: userData.id}, function(error, result) {
+            if (error) {
+              callback(error, undefined)
+            } else {
+              var final = {
+                fridge: result,
+                update: sad_data
+              }
+              callback(null, final)
+            }
+          })
+        } else {
+          var final = null
+          callback(null, final)
+        }
       },
       function(error) {
         callback(error, undefined)

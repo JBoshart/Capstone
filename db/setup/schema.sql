@@ -23,7 +23,7 @@ CREATE TABLE items(
   user_id integer,
   fridge_id integer,
   name text,
-  quantity integer,
+  quantity decimal(9,2),
   quantity_unit text,
   purchase_date date,
   expiration date

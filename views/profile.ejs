@@ -3,6 +3,7 @@
  <head>
    <title>Aspirational Vegetables</title>
    <link rel='stylesheet' href='/stylesheets/style.css' />
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
    <script type="text/javascript" src="/javascripts/aspirationalvegetables.js"></script>
@@ -11,26 +12,29 @@
 
  </header>
  <body>
-   <h1>Welcome <%= user.name %>!</h1>
-    <div class="nav">
-      <h2>Score: <%= user.score %></h2>
-      <a href="/logout" class="button">Logout</a>
-    </div>
+  <h1>Welcome <%= user.name %>!</h1>
 
-    <div class="dashboard">
+  <div class="nav">
+    <h2>Score: <%= user.score %></h2>
+    <a href="/logout" class="button">Logout</a>
+  </div>
 
-      <form action='/recipes' method="post">
-        <fieldset>
-          <label for="items">How many items?</label>
-          <input type="number" name="items" min="1" max="5" />
-          <label for="options">How many options?</label>
-          <input type="number" name="options" min="1" max="5" />
-          <input type="submit" value="Play a Challenge!" />
-        </fieldset>
-      </form>
-    </div>
+  <div class="dashboard">
+    <% if (locals.items) { %>
+      <div class="challenge">
+        <form action='/recipes' method="post">
+          <fieldset>
+            <label for="items">How many items?</label>
+            <input type="number" name="items" min="1" max="5" />
+            <label for="options">How many options?</label>
+            <input type="number" name="options" min="1" max="5" />
+            <input type="submit" value="Play a Challenge!" />
+          </fieldset>
+        </form>
+      </div>
+    <% } %>  
 
-    <div class="fridge">
+    <div class="add-items">
       <h2>Add Items:</h2>
       <form action='/items' method="post">
         <fieldset>
@@ -54,25 +58,30 @@
           <input type="submit" value="Add" />
         </fieldset>
       </form>
+    </div>
 
+    <div class="fridge">
       <% if (locals.items) { %>
-      <table class="contents" border="1">
-        <tr>
-          <th>Item Name</th>
-          <th>Amount on Hand</th>
-          <th>Added On</th>
-          <th>Expires On</th>
-        </tr>
-
-        <% for (var i=0; i<locals.items.length; i++) { %>
+        <table class="contents" border="1">
           <tr>
-            <td><%= locals.items[i].name %></td>
-            <td><%= locals.items[i].quantity %> <%= locals.items[i].quantity_unit %></td>
-            <td><%= locals.items[i].purchase_date.toLocaleDateString() %></td>
-            <td><%= locals.items[i].expiration.toLocaleDateString() %></td>
+            <th>Item Name</th>
+            <th>Amount on Hand</th>
+            <th>Added On</th>
+            <th>Expires On</th>
           </tr>
+
+          <% for (var i=0; i<locals.items.length; i++) { %>
+            <tr>
+              <td><%= locals.items[i].name %></td>
+              <td><%= locals.items[i].quantity %> <%= locals.items[i].quantity_unit %></td>
+              <td><%= locals.items[i].purchase_date.toLocaleDateString() %></td>
+              <td><%= locals.items[i].expiration.toLocaleDateString() %></td>
+            </tr>
           <% } %>
         </table>
-        <% } %>
+      <% } else { %>
+        There's nothing in your fridge! Add items to get started!
+      <% } %>
     </div>
-  </body>
+  </div>
+</body>

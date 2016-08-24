@@ -22,7 +22,7 @@ Fridge.findOrMakeFridge = function(userID, callback) {
         }
       })
     } else {
-      db.items.find({fridge_id: fridge.id}, function(error, items) {
+      db.items.where("fridge_id=$1 ORDER BY expiration", [fridge.id], function(error, items) {
         if (error) {
           callback(error, undefined)
         } else {
