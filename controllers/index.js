@@ -1,7 +1,7 @@
 var IndexController = {
   getIndex: function(request, response) {
     if(request.user) {
-      response.render('profile', {user: request.user})
+      response.redirect('/profile')
     } else {
       response.render('index')
     }

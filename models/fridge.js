@@ -8,7 +8,7 @@ Fridge.findOrMakeFridge = function(userID, callback) {
     if (error) {
       callback(error, undefined);
     } else if (!fridge) {
-      db.fridge.save({user_id: userID, items_quantity: 0}, function(error, newFridge) {
+      db.fridge.save({user_id: userID}, function(error, newFridge) {
         if (error || !newFridge) {
           callback(error, undefined)
         } else {
@@ -16,7 +16,12 @@ Fridge.findOrMakeFridge = function(userID, callback) {
             if (error) {
               callback(error, undefined)
             } else {
-              callback(null, newFridge)
+              let locals = {
+                user_id: userID,
+                fridge_id: newFridge.id,
+                items: []
+              }
+              callback(null, locals)
             }
           })
         }
@@ -27,13 +32,13 @@ Fridge.findOrMakeFridge = function(userID, callback) {
           callback(error, undefined)
         } else {
           for (var i=0; i<items.length; i++) {
-            if (items[i].quantity_unit === "cups") {
+            if (items[i].quantity_unit === "cup(s)") {
               items[i].quantity = (items[i].quantity/8)
-            } else if (items[i].quantity_unit === "pint") {
+            } else if (items[i].quantity_unit === "pint(s)") {
               items[i].quantity = (items[i].quantity/16)
-            } else if (items[i].quantity_unit === "quart") {
+            } else if (items[i].quantity_unit === "quart(s)") {
               items[i].quantity = (items[i].quantity/32)
-            } else if (items[i].quantity_unit === "gallon") {
+            } else if (items[i].quantity_unit === "gallon(s)") {
               items[i].quantity = (items[i].quantity/128)
             }
           }

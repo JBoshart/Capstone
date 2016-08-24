@@ -12,10 +12,13 @@ Users.findOrMakeUser = function(sessionInfo, callback) {
         if (error || !newUser) {
           callback(error, undefined)
         } else {
+          
+          console.log("the uncoolest")
           callback(null, newUser)
         }
       })
     } else {
+      console.log("I guess we're cool?")
       callback(null, user)
     }
   })

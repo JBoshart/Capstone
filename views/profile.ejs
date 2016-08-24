@@ -12,7 +12,7 @@
 
  </header>
  <body>
-  <h1>Welcome <%= user.name %>!</h1>
+  <h1>Welcome, <%= user.name %>!</h1>
 
   <div class="nav">
     <h2>Score: <%= user.score %></h2>
@@ -20,7 +20,7 @@
   </div>
 
   <div class="dashboard">
-    <% if (locals.items) { %>
+    <% if (locals.items.length !== 0) { %>
       <div class="challenge">
         <form action='/recipes' method="post">
           <fieldset>
@@ -32,7 +32,7 @@
           </fieldset>
         </form>
       </div>
-    <% } %>  
+    <% } %>
 
     <div class="add-items">
       <h2>Add Items:</h2>
@@ -47,10 +47,10 @@
           <label for="unit">Unit:</label>
           <select name="unit">
             <option value="ounce(s)">ounce(s)</option>
-            <option value="cups">cup(s)</option>
-            <option value="pint">pint(s)</option>
-            <option value="quart">quart(s)</option>
-            <option value="gallon">gallon(s)</option>
+            <option value="cup(s)">cup(s)</option>
+            <option value="pint(s)">pint(s)</option>
+            <option value="quart(s)">quart(s)</option>
+            <option value="gallon(s)">gallon(s)</option>
           </select>
         </br>
           <label for="expiration">Expiration Date:</label>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="fridge">
-      <% if (locals.items) { %>
+      <% if (locals.items.length !== 0) { %>
         <table class="contents" border="1">
           <tr>
             <th>Item Name</th>

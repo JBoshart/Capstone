@@ -13,7 +13,7 @@ var advanced_rest = "/information?includeNutrition=false"
 
 
 Recipes.getBasic = function (limitInfo, sessionInfo, callback) {
-  db.items.where("user_id=$1 ORDER BY expiration LIMIT $2", [sessionInfo.id, limitInfo.items], function(error, items) {
+  db.items.where("user_id=$1 AND quantity > 0 ORDER BY expiration LIMIT $2", [sessionInfo.id, limitInfo.items], function(error, items) {
     // Format for search query:
     var ingredients = ""
     for (var i=0; i<items.length; i++) {
