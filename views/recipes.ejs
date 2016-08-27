@@ -2,14 +2,25 @@
 <html>
  <head>
    <title>Aspirational Vegetables</title>
-   <link rel='stylesheet' href='/stylesheets/style.css' />
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+   <link rel='stylesheet' href='/stylesheets/style.css' />
+   <link href="https://fonts.googleapis.com/css?family=Josefin+Slab" rel="stylesheet">
    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
    <script type="text/javascript" src="/javascripts/aspirationalvegetables.js"></script>
  </head>
  <header>
-
+   <nav class="navbar navbar-default navbar-fixed-top">
+     <div class="container-fluid">
+       <div class="navbar-header pull-left">
+         <a class="navbar-brand" href="/">Welcome, <%= locals.user %>!</a>
+         <p>Current Score: <%= locals.score %></p>
+       </div>
+       <div class="navbar-header navbar-right" id="right">
+         <a href="/logout" class="navbar-link">log out</a>
+       </div>
+     </div>
+   </nav>
  </header>
  <body>
 
@@ -48,7 +59,7 @@
     </ul>
     <form action="/items/subtract" method="post">
       <input type="hidden" value="<%=locals.id%>" name="recipe_id"/>
-      <input type="hidden" value="<%=locals.score%>" name="recipe_score"/>
+      <input type="hidden" value="<%=locals.optionScore%>" name="recipe_score"/>
       <input type="submit" value="I made this!" />
     </form>
     <a href="/profile" class="button">I don't want to make this! Take me back!</a>

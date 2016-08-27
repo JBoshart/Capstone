@@ -132,6 +132,8 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
               callback(error, undefined)
             } else {
               var final = {
+                user: userData.name,
+                score: userData.score,
                 fridge: result,
                 update: sad_data
               }

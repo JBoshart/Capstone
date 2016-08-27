@@ -19,7 +19,7 @@ var RecipesController = {
   },
 
   getInstructions: function(request, response) {
-    Recipes.getAdvanced(request.params.id, request.params.score, function(error, advanced_info) {
+    Recipes.getAdvanced(request.params.id, request.params.score, request.user, function(error, advanced_info) {
       if (error) {
         var err = new Error
         err.status = 500
