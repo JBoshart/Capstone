@@ -29,41 +29,61 @@
 <% if (locals.basic === true) { %>
   <div id="recipe-options">
     <h2>What would you like to make?</h2>
-      <ul>
-      <% for (var i in locals.recipes) { %>
-        <% var possible = (locals.base_score * locals.recipes[i].usedIngredientCount) %>
-        <div id="option-<%=i%>" onclick='window.location.href="recipes/<%=locals.recipes[i].id%>/<%=possible%>"'>
-          <li id="option-image"><image src="<%= locals.recipes[i].image %>"></li>
-          <li id="option-title"><%= locals.recipes[i].title %></li>
-          <li id="option-uses">Uses <%= locals.recipes[i].usedIngredientCount %> of <%= locals.itemNumber %> requested ingredients.</li>
-          <li id="option-score">Point value: <%= possible %></li>
-        </div>
+    <% for (var i in locals.recipes) { %>
+      <% var possible = (locals.base_score * locals.recipes[i].usedIngredientCount) %>
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+          <td width="100%" style="padding-right: 10px; background-color: #f5f5f5; border-bottom: 1px solid black; border-top: 1px solid black;">
+          <table cellpadding="0" cellspacing="0" boarder="0" width="100%">
+        </tbody></tr>
+          <td style="padding-top: 10px; padding-bottom: 10px;" onclick='window.location.href="recipes/<%=locals.recipes[i].id%>/<%=possible%>"' class="single">
+            <div style="position: relative;" class="results">
+              <div style="position: relative;">
+                <table widith="100%">
+                  <tbody><tr>
+                    <td width="110px" valign="TOP" align="CENTER"><div style="min-width: 100px;"><img src="<%= locals.recipes[i].image %>" style="padding: 0px; margin: 5px; display: block; width:200px;"></div></td>
+                    <td valign="TOP"><h2 style="padding-bottom: 5px;"><%= locals.recipes[i].title %></h2><div style="padding-bottom: 15px; padding-top: 5px;" class="details">Uses <%= locals.recipes[i].usedIngredientCount %> of <%= locals.itemNumber %> requested ingredients.</div><div class="points">Point value: <%= possible %></div></td>
+                    <td nowrap="" align="RIGHT" valign="TOP" style="padding-top: 6px;"></td></tr>
+                  </tbody></table>
+              </div>
+            </div>
+            </table>
+          </td>
       <% } %>
-      </ul>
+      </table>
     </div>
 
 <% } else if (locals.advanced === true) { %>
-  <div id="selected-recipe">
-    <ul>
-      <li id="selected-title"><%= locals.title %></li>
-      <li id="selected-image"><img src="<%=locals.image%>"></li>
-      <li id="selected-time">Prep-time: <%= locals.time %> Minutes</li>
-      <li id="selected-ingredients">
-        <ul id="selected-ingredient-list">
-          <% for (var i=0; i<locals.ingredients.length; i++) { %>
-          <li><%= locals.ingredients[i].inText %></li>
-          <% } %>
-        </ul>
-      </li>
-      <li id="selected-instructions"><%- locals.instructions %></li>
-    </ul>
-    <form action="/items/subtract" method="post">
-      <input type="hidden" value="<%=locals.id%>" name="recipe_id"/>
-      <input type="hidden" value="<%=locals.optionScore%>" name="recipe_score"/>
-      <input type="submit" value="I made this!" />
-    </form>
-    <a href="/profile" class="button">I don't want to make this! Take me back!</a>
-  </div>
+  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tbody><tr>
+      <td width="100%" style="padding-right: 10px; background-color: #f5f5f5; border-bottom: 1px solid black; border-top: 1px solid black;">
+      <table cellpadding="0" cellspacing="0" boarder="0" width="100%">
+    </tbody></tr>
+      <td style="padding-top: 10px; padding-bottom: 10px;">
+        <div style="position: relative;" class="results">
+          <div style="position: relative;">
+            <table widith="100%">
+              <tbody><tr>
+                <td width="110px" valign="TOP" align="CENTER"><div style="min-width: 100px;"><img src="<%=locals.image%>" style="padding: 0px; margin: 5px; display: block; width:200px;"></div></td>
+                <td valign="TOP"><h2 style="padding-bottom: 5px;"><%= locals.title %></h2><div style="padding-bottom: 15px; padding-top: 5px;" class="details">Prep-time: <%= locals.time %></div><div class="ingredients"><% for (var i=0; i<locals.ingredients.length; i++) { %>
+                <li><%= locals.ingredients[i].inText %></li>
+                <% } %></div><div class="instructions"><%- locals.instructions %>
+                </div><div class="buttons">
+                  <form action="/items/subtract" method="post">
+                    <input type="hidden" value="<%=locals.id%>" name="recipe_id"/>
+                    <input type="hidden" value="<%=locals.optionScore%>" name="recipe_score"/>
+                    <input type="submit" value="I made this!" />
+                  </form>
+                  <a href="/profile" class="button">I don't want to make this! Take me back!</a>
+                </div></td>
+                <td nowrap="" align="RIGHT" valign="TOP" style="padding-top: 6px;"></td></tr>
+              </tbody></table>
+          </div>
+        </div>
+        </table>
+      </td>
+  </table>
+</div>
   <% } else { %>
     <div class="manual-update">
       <form action="/items/manual" method="post">
