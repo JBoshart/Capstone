@@ -1,4 +1,3 @@
-var Users = require("../models/users");
 var Fridge = require("../models/fridge")
 var passport = require('passport');
 

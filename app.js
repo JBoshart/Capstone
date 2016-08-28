@@ -63,6 +63,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
+app.use(function(request, response, next) {
+  if (request.user || request.path === "/" || request.path.startsWith('/login')) {
+    next()
+  } else {
+    response.redirect("/")
+  }
+})
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var items = require('./routes/items')

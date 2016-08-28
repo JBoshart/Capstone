@@ -12,13 +12,13 @@ Items.addOrMakeItems = function(formData, userData, callback) {
   var today = new Date().toISOString().slice(0,10);
   var conversion = formData.quantity
 
-  if (formData.unit === "cups") {
+  if (formData.unit === "cup(s)") {
     conversion = (formData.quantity * 8)
-  } else if (formData.unit === "pint") {
+  } else if (formData.unit === "pint(s)") {
     conversion = (formData.quantity * 16)
-  } else if (formData.unit === "quart") {
+  } else if (formData.unit === "quart(s)") {
     conversion = (formData.quantity * 32)
-  } else if (formData.unit === "gallon") {
+  } else if (formData.unit === "gallon(s)") {
     conversion = (formData.quantity * 128)
   }
 
@@ -101,13 +101,23 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
               sad_data.push(condensed[i])
               resolve()
             } else {
-              db.items.save({id: result[0].id, quantity: (result[0].quantity - condensed[i].quantity)}, function(error, saved) {
-                if (error) {
-                  reject(error)
-                } else {
-                  resolve()
-                }
-              })
+              if ((result[0].quantity - condensed[i].quantity) > 0) {
+                db.items.save({id: result[0].id, quantity: (result[0].quantity - condensed[i].quantity)}, function(error, saved) {
+                  if (error) {
+                    reject(error)
+                  } else {
+                    resolve()
+                  }
+                })
+              } else {
+                db.items.destroy({id: result[0].id}, function(error, destroyed) {
+                  if (error) {
+                    reject(error)
+                  } else {
+                    resolve()
+                  }
+                })
+              }
             }
           })
         })
@@ -122,6 +132,8 @@ Items.removeItems = function (recipe_id, recipe_score, userData, callback) {
               callback(error, undefined)
             } else {
               var final = {
+                user: userData.name,
+                score: userData.score,
                 fridge: result,
                 update: sad_data
               }
@@ -154,13 +166,13 @@ Items.removeManual = function(form, user, callback) {
   for (var i=0; i<form.item.length; i++) {
     (function(i) {
       var promise = new Promise(function(resolve, reject) {
-        if (form.unit[i] === "cups") {
+        if (form.unit[i] === "cup(s)") {
           form.quantity[i] = (Number(form.quantity[i]) * 8)
-        } else if (form.unit[i] === "pint") {
+        } else if (form.unit[i] === "pint(s)") {
           form.quantity[i] = (Number(form.quantity[i]) * 16)
-        } else if (form.unit[i] === "quart") {
+        } else if (form.unit[i] === "quart(s)") {
           form.quantity[i] = (Number(form.quantity[i]) * 32)
-        } else if (form.unit[i] === "gallon") {
+        } else if (form.unit[i] === "gallon(s)") {
           form.quantity[i] = (Number(form.quantity[i]) * 128)
         }
 
