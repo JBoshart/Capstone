@@ -5,10 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var dotenv = require('dotenv').config()
 var passport = require('passport');
 var FaceStrategy = require('passport-facebook').Strategy;
 var massive = require('massive');
+
+var node_env = process.env.NODE_ENV || "development"
+if ( node_env === "development") {
+  var dotenv = require('dotenv').config()
+}
 
 var app = module.exports = express();
 
