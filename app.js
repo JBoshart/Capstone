@@ -34,7 +34,7 @@ var UserModel = require('./models/users')
 passport.use(new FaceStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: 'http://localhost:3000/login/facebook/return'
+  callbackURL: 'http://aspirationalvegetables.us-west-2.elasticbeanstalk.com/login/facebook/return'
 },
 function(accessToken, refreshToken, profile, cb) {
   UserModel.findOrMakeUser(profile, function (error, user_info) {
