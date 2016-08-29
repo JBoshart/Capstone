@@ -12,13 +12,20 @@ var massive = require('massive');
 var node_env = process.env.NODE_ENV || "development"
 if ( node_env === "development") {
   var dotenv = require('dotenv').config()
+  var connectionString = "postgres://localhost/AspirationalVegetables";
+} else if (node_env === "production") {
+  var connectionString = "postgres://" +
+                         process.env.RDS_USERNAME + ":" +
+                         process.env.RDS_PASSWORD + "@" +
+                         process.env.RDS_HOSTNAME + ":" +
+                         process.env.RDS_PORT + "/" +
+                         process.env.RDS_DB_NAME
 }
 
+var db = massive.connectSync({connectionString: connectionString});
 var app = module.exports = express();
 
 // database
-var connectionString = "postgres://localhost/AspirationalVegetables";
-var db = massive.connectSync({connectionString: connectionString});
 app.set('db', db);
 
 var UserModel = require('./models/users')
