@@ -16,7 +16,7 @@ Fridge.findOrMakeFridge = function(userID, callback) {
             if (error) {
               callback(error, undefined)
             } else {
-              let locals = {
+              var locals = {
                 user_id: userID,
                 fridge_id: newFridge.id,
                 items: []
@@ -43,7 +43,7 @@ Fridge.findOrMakeFridge = function(userID, callback) {
             }
           }
 
-          let locals = {
+          var locals = {
             user_id: fridge.user_id,
             fridge_id: fridge.id,
             items_quantity: fridge.items_quantity,
