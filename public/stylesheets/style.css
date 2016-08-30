@@ -96,8 +96,13 @@ a {
   margin-top: 0;
 }
 
-form {
+.side {
   margin: 5px;
+  font-size: 16px;
+}
+
+form {
+  margin: 0px;
   font-size: 16px;
 }
 
@@ -132,10 +137,14 @@ input, select {
   color: white;
 }
 
+.side-form {
+  padding-left: 15px;
+}
+
 .submit {
   float: right;
   margin-top: 5px;
-  margin-right: 50px;
+  margin-right: 15px;
 }
 
 .top {
