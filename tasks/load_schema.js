@@ -1,7 +1,7 @@
 var massive = require('massive');
-var connectionString = "postgres://localhost/AspirationalVegetables";
+var config = require("../config.js")
 
-var db = massive.connectSync({connectionString : connectionString});
+var db = massive.connectSync({connectionString : config.connectionString});
 
 // setup is named such because the folder in db is called setup.
 // setup is also a property of the db object

@@ -1,7 +1,7 @@
 var massive = require('massive');
-var connectionString = "postgres://localhost";
+var config = require("../config.js")
 
-var db = massive.connectSync({connectionString : connectionString});
+var db = massive.connectSync({connectionString : config.connectionString});
 
 db.run("CREATE DATABASE AspirationalVegetables;", function(err, res) {
   if (err)
