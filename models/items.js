@@ -180,13 +180,23 @@ Items.removeManual = function(form, user, callback) {
           if (error) {
             reject(error)
           } else {
-            db.items.save({id: item.id, quantity: (item.quantity - form.quantity[i])}, function(error, saved) {
-              if (error) {
-                reject(error)
-              } else {
-                resolve()
-              }
-            })
+            if ((item.quantity - form.quantity[i]) > 0) {
+              db.items.save({id: item.id, quantity: (item.quantity - form.quantity[i])}, function(error, saved) {
+                if (error) {
+                  reject(error)
+                } else {
+                  resolve()
+                }
+              })
+            } else {
+              db.items.destroy({id: item.id}, function(error, destroyed) {
+                if (error) {
+                  reject(error)
+                } else {
+                  resolve()
+                }
+              })
+            }
           }
         })
       })
