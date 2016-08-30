@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prestart": "npm run db:schema",
     "start": "node ./bin/www",
     "db:drop": "dropdb AspirationalVegetables",
     "db:create": "createdb AspirationalVegetables",

@@ -13,6 +13,7 @@ var node_env = process.env.NODE_ENV || "development"
 if ( node_env === "development") {
   var dotenv = require('dotenv').config()
   var connectionString = "postgres://localhost/AspirationalVegetables";
+  var facebookReturn = "http://localhost:3000/login/facebook/return"
 } else if (node_env === "production") {
   var connectionString = "postgres://" +
                          process.env.RDS_USERNAME + ":" +
@@ -20,6 +21,7 @@ if ( node_env === "development") {
                          process.env.RDS_HOSTNAME + ":" +
                          process.env.RDS_PORT + "/" +
                          process.env.RDS_DB_NAME
+  var facebookReturn = process.env.FACEBOOK_RETURN
 }
 
 var db = massive.connectSync({connectionString: connectionString});
@@ -34,7 +36,7 @@ var UserModel = require('./models/users')
 passport.use(new FaceStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: 'http://aspirationalvegetables.us-west-2.elasticbeanstalk.com/login/facebook/return'
+  callbackURL: facebookReturn
 },
 function(accessToken, refreshToken, profile, cb) {
   UserModel.findOrMakeUser(profile, function (error, user_info) {
